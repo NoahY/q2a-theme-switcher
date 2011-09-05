@@ -13,10 +13,9 @@
 */                      
                         
         
-        $t = true;
-        $m = true;
         if(!isset($qa_nav_pages_cached)) $qa_nav_pages_cached = array();
         if(!isset($qa_widgets_cached)) $qa_widgets_cached = array();
+
         if (!defined('QA_VERSION')) { // don't allow this page to be requested directly from browser
                         header('Location: ../../');
                         exit;   
