@@ -4,8 +4,10 @@
 		function option_default($option) {
 			
 			switch($option) {
+				case 'theme_switch_title':
+					return 'Theme';
 				case 'theme_switch_text':
-					return 'Choose theme';
+					return 'Choose theme:';
 				case 'theme_switch_default':
 					return qa_opt('site_theme');
 				default:
@@ -47,6 +49,7 @@
 				}
 				qa_opt('theme_switch_enable',(bool)qa_post_text('theme_switch_enable'));
 				qa_opt('theme_switch_default',qa_post_text('theme_switch_default'));
+				qa_opt('theme_switch_title',qa_post_text('theme_switch_title'));
 				qa_opt('theme_switch_text',qa_post_text('theme_switch_text'));
 				qa_opt('theme_switch_enable_mobile',(bool)qa_post_text('theme_switch_enable_mobile'));
 				qa_opt('theme_switch_mobile',qa_post_text('theme_switch_mobile'));
@@ -76,6 +79,14 @@
 				'value' => @$themes[qa_opt('theme_switch_default')],
 			);				
 		  
+				
+			$fields[] = array(
+				'label' => 'Theme switch title',
+				'type' => 'text',
+				'value' => qa_html(qa_opt('theme_switch_title')),
+				'tags' => 'NAME="theme_switch_title"',
+			);		   
+			
 				
 			$fields[] = array(
 				'label' => 'Theme switch text',
