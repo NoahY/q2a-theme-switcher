@@ -75,6 +75,15 @@
 			if(!$userid) return;
 
 			if(qa_get_logged_in_handle() && qa_get_logged_in_handle() == $handle) {
+
+				if (qa_clicked('theme_switch_save')) {
+					qa_db_query_sub(
+						'INSERT INTO ^usermeta (user_id,meta_key,meta_value) VALUES (#,$,$) ON DUPLICATE KEY UPDATE meta_value=$',
+						$userid,'custom_theme',qa_post_text('theme_choice'),qa_post_text('theme_choice')
+					);
+					qa_redirect($this->request,array('ok'=>qa_lang_html('admin/options_saved')));
+				}
+
 				require_once QA_INCLUDE_DIR.'qa-app-admin.php';
 				
 				$ok = qa_get('ok')?qa_get('ok'):null;
@@ -85,20 +94,6 @@
 						$userid, 'custom_theme'
 					),true
 				);				
-				if (qa_clicked('theme_switch_save')) {
-					qa_db_query_sub(
-						'INSERT INTO ^usermeta (user_id,meta_key,meta_value) VALUES (#,$,$) ON DUPLICATE KEY UPDATE meta_value=$',
-						$userid,'custom_theme',qa_post_text('theme_choice'),qa_post_text('theme_choice')
-					);
-					qa_redirect($this->request,array('ok'=>qa_lang_html('admin/options_saved')));
-				}
-				$content = qa_db_read_one_assoc(
-					qa_db_query_sub(
-						'SELECT signature,format FROM ^usersignatures WHERE userid=#',
-						$userid
-					),
-					true
-				);
 				
 				$themes = qa_admin_theme_options();
 				$fields['themes'] = array(
