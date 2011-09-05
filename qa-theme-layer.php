@@ -33,7 +33,7 @@
 							$keys2 = array_splice($keys, $insertBefore);
 							$vals2 = array_splice($vals, $insertBefore);
 
-							$keys[] = 'form-signature';
+							$keys[] = 'form-theme-switch';
 							$vals[] = $theme_form;
 
 							$this->content = array_merge(array_combine($keys, $vals), array_combine($keys2, $vals2));
@@ -111,9 +111,9 @@
 					
 					'style' => 'tall',
 					
-					'title' => '<a name="signature_text"></a>Signature',
+					'title' => '<a name="theme_text"></a>'.qa_opt('theme_switch_title'),
 
-					'tags' =>  'action="'.qa_self_html().'#signature_text" method="POST"',
+					'tags' =>  'action="'.qa_self_html().'#theme_text" method="POST"',
 					
 					'fields' => $fields,
 					
@@ -122,11 +122,6 @@
 							'label' => qa_lang_html('main/save_button'),
 							'tags' => 'NAME="theme_switch_save"',
 						),
-					),
-					
-					'hidden' => array(
-						'editor' => qa_html($editorname),
-						'dosavesig' => '1',
 					),
 				);
 				return $form;
