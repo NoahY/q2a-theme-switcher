@@ -13,8 +13,14 @@
 */                      
                         
         
-        if(!isset($qa_nav_pages_cached)) $qa_nav_pages_cached = array();
-        if(!isset($qa_widgets_cached)) $qa_widgets_cached = array();
+        if(!isset($qa_nav_pages_cached)) {
+            $qa_nav_pages_cached_set = 1;
+            $qa_nav_pages_cached = array();
+        }
+        if(!isset($qa_widgets_cached)) {
+            $qa_widgets_cached_set = 1;
+            $qa_widgets_cached = array();
+        }
 
         if (!defined('QA_VERSION')) { // don't allow this page to be requested directly from browser
                         header('Location: ../../');
@@ -38,14 +44,6 @@
             
             return $theme_choice;
         }
-        if(@qa_opt('theme_switch_enable')) {
-            $this_user_theme = qa_theme_chooser();
-            @qa_opt('site_theme',$this_user_theme?$this_user_theme:@qa_opt('theme_switch_default'));
-        }
-
-        qa_register_plugin_module('module', 'qa-theme-admin.php', 'qa_theme_admin', 'Theme Admin');
-        
-        qa_register_plugin_layer('qa-theme-layer.php', 'Theme Layer');
         
         function qa_theme_chooser_detect_mobile() {
             $mobile_browser = '0';
@@ -83,6 +81,37 @@
             }
             return $mobile_browser;
         }
+
+
+        if(!isset($qa_nav_pages_cached)) {
+            $qa_nav_pages_cached_set = 1;
+            $qa_nav_pages_cached = array();
+        }
+        if(!isset($qa_widgets_cached)) {
+            $qa_widgets_cached_set = 1;
+            $qa_widgets_cached = array();
+        }
+
+        if(@qa_opt('theme_switch_enable')) {
+            $this_user_theme = qa_theme_chooser();
+            @qa_opt('site_theme',$this_user_theme?$this_user_theme:@qa_opt('theme_switch_default'));
+        }
+
+
+        if(isset($qa_nav_pages_cached_set)) {
+            unset($qa_nav_pages_cached_set);
+            unset($qa_nav_pages_cached);
+        }
+        if(isset($qa_widgets_cached_set)) {
+            unset($qa_widgets_cached_set);
+            unset($qa_widgets_cached);
+        }
+
+
+        qa_register_plugin_module('module', 'qa-theme-admin.php', 'qa_theme_admin', 'Theme Admin');
+        
+        qa_register_plugin_layer('qa-theme-layer.php', 'Theme Layer');
+
                         
 /*                              
         Omit PHP closing tag to help avoid accidental output
