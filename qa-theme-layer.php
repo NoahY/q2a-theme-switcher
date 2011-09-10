@@ -23,7 +23,7 @@
 						if($this->content['q_list']) {  // paranoia
 							// array splicing kungfu thanks to Stack Exchange
 							
-							// This adds form-signature before q_list
+							// This adds form-theme-switch before q_list
 						
 							$keys = array_keys($this->content);
 							$vals = array_values($this->content);

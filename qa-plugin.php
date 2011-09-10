@@ -16,7 +16,7 @@
                         header('Location: ../../');
                         exit;   
         }               
-        
+
         function qa_theme_chooser() {
             if(@qa_opt('theme_switch_enable_mobile')) {
                 $theme_choice = qa_theme_chooser_detect_mobile()?@qa_opt('theme_switch_mobile'):false;
@@ -71,8 +71,7 @@
             }
             return $mobile_browser;
         }
-
-
+        
         if(!isset($qa_nav_pages_cached)) {
             $qa_nav_pages_cached_set = 1;
             $qa_nav_pages_cached = array();
@@ -81,6 +80,14 @@
             $qa_widgets_cached_set = 1;
             $qa_widgets_cached = array();
         }
+        if(!isset($qa_options_loaded)) {
+            $qa_options_loaded_set = 1;
+        }
+        
+        if(!isset($qa_options_cache)) {
+            $qa_options_cache_set = 1;
+        }
+        
 
         if(@qa_opt('theme_switch_enable')) {
             $this_user_theme = qa_theme_chooser();
@@ -88,6 +95,11 @@
         }
 
 
+        qa_register_plugin_module('module', 'qa-theme-admin.php', 'qa_theme_admin', 'Theme Admin');
+        
+        qa_register_plugin_layer('qa-theme-layer.php', 'Theme Layer');
+
+        unset($$qa_options_loaded);
         if(isset($qa_nav_pages_cached_set)) {
             unset($qa_nav_pages_cached_set);
             unset($qa_nav_pages_cached);
@@ -96,11 +108,14 @@
             unset($qa_widgets_cached_set);
             unset($qa_widgets_cached);
         }
-
-
-        qa_register_plugin_module('module', 'qa-theme-admin.php', 'qa_theme_admin', 'Theme Admin');
-        
-        qa_register_plugin_layer('qa-theme-layer.php', 'Theme Layer');
+        if(isset($qa_options_loaded_set)) {
+            unset($qa_options_loaded_set);
+            unset($qa_options_loaded);
+        }
+        if(isset($qa_options_cache_set)) {
+            unset($qa_options_cache_set);
+            unset($qa_options_cache);
+        }
 
                         
 /*                              
