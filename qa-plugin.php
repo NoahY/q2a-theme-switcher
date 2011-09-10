@@ -11,16 +11,6 @@
         Plugin License: GPLv2                           
         Plugin Minimum Question2Answer Version: 1.4
 */                      
-                        
-        
-        if(!isset($qa_nav_pages_cached)) {
-            $qa_nav_pages_cached_set = 1;
-            $qa_nav_pages_cached = array();
-        }
-        if(!isset($qa_widgets_cached)) {
-            $qa_widgets_cached_set = 1;
-            $qa_widgets_cached = array();
-        }
 
         if (!defined('QA_VERSION')) { // don't allow this page to be requested directly from browser
                         header('Location: ../../');
