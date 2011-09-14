@@ -9,7 +9,7 @@
         Plugin Author: NoahY
         Plugin Author URI:                              
         Plugin License: GPLv2                           
-        Plugin Minimum Question2Answer Version: 1.4
+        Plugin Minimum Question2Answer Version: 1.4.2
 */                      
 
         if (!defined('QA_VERSION')) { // don't allow this page to be requested directly from browser
