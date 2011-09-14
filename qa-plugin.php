@@ -72,23 +72,6 @@
             return $mobile_browser;
         }
         
-        if(!isset($qa_nav_pages_cached)) {
-            $qa_nav_pages_cached_set = 1;
-            $qa_nav_pages_cached = array();
-        }
-        if(!isset($qa_widgets_cached)) {
-            $qa_widgets_cached_set = 1;
-            $qa_widgets_cached = array();
-        }
-        if(!isset($qa_options_loaded)) {
-            $qa_options_loaded_set = 1;
-        }
-        
-        if(!isset($qa_options_cache)) {
-            $qa_options_cache_set = 1;
-        }
-        
-
         if(@qa_opt('theme_switch_enable')) {
             $this_user_theme = qa_theme_chooser();
             @qa_opt('site_theme',$this_user_theme?$this_user_theme:@qa_opt('theme_switch_default'));
@@ -98,24 +81,6 @@
         qa_register_plugin_module('module', 'qa-theme-admin.php', 'qa_theme_admin', 'Theme Admin');
         
         qa_register_plugin_layer('qa-theme-layer.php', 'Theme Layer');
-
-        unset($$qa_options_loaded);
-        if(isset($qa_nav_pages_cached_set)) {
-            unset($qa_nav_pages_cached_set);
-            unset($qa_nav_pages_cached);
-        }
-        if(isset($qa_widgets_cached_set)) {
-            unset($qa_widgets_cached_set);
-            unset($qa_widgets_cached);
-        }
-        if(isset($qa_options_loaded_set)) {
-            unset($qa_options_loaded_set);
-            unset($qa_options_loaded);
-        }
-        if(isset($qa_options_cache_set)) {
-            unset($qa_options_cache_set);
-            unset($qa_options_cache);
-        }
 
                         
 /*                              
