@@ -4,7 +4,7 @@
         Plugin Name: Theme Switcher
         Plugin URI: https://github.com/NoahY/q2a-theme-switcher
         Plugin Description: Theme Switcher
-        Plugin Version: 0.1
+        Plugin Version: 1.0b
         Plugin Date: 2011-09-05
         Plugin Author: NoahY
         Plugin Author URI:                              
