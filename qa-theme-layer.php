@@ -10,6 +10,27 @@
 		{
 			if (qa_opt('theme_switch_enable')) {
 
+				if($_GET['theme_switch']) {
+					if($userid = qa_get_logged_in_userid()) {
+						qa_db_query_sub(
+							'INSERT INTO ^usermeta (user_id,meta_key,meta_value) VALUES (#,$,$) ON DUPLICATE KEY UPDATE meta_value=$',
+							$userid,'custom_theme',$_GET['theme_switch'],$_GET['theme_switch']
+						);
+					}
+					else setcookie('qa_theme_switch', $_GET['theme_switch'], time()+86400*365, '/', QA_COOKIE_DOMAIN);
+					qa_redirect($this->request,array());
+				}
+				
+				global $qa_theme_switch_is_mobile;
+				
+				if($qa_theme_switch_is_mobile && qa_opt('theme_switch_enable_mobile')) {
+					error_log('test');
+					$this->content['navigation']['footer']['theme_switch'] = array(
+						'label' => 'Mobile Version',
+						'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_mobile'))),
+					);
+				}
+
 				if($this->template == 'user') { 
 
 					// add theme switcher
@@ -83,6 +104,13 @@
 					);
 					qa_redirect($this->request,array('ok'=>qa_lang_html('admin/options_saved')));
 				}
+				else if (qa_clicked('theme_switch_user_reset')) {
+					qa_db_query_sub(
+						'DELETE FROM ^usermeta WHERE user_id=# AND meta_key=$',
+						$userid,'custom_theme'
+					);
+					qa_redirect($this->request,array('ok'=>qa_lang_html('admin/options_reset')));
+				}
 
 				require_once QA_INCLUDE_DIR.'qa-app-admin.php';
 				
@@ -118,6 +146,10 @@
 					'fields' => $fields,
 					
 					'buttons' => array(
+						array(
+                        'label' => qa_lang_html('admin/reset_options_button'),
+							'tags' => 'NAME="theme_switch_user_reset"',
+						),
 						array(
 							'label' => qa_lang_html('main/save_button'),
 							'tags' => 'NAME="theme_switch_save"',
