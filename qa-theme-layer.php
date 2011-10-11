@@ -24,7 +24,6 @@
 				global $qa_theme_switch_is_mobile;
 				
 				if($qa_theme_switch_is_mobile && qa_opt('theme_switch_enable_mobile') && qa_opt('site_theme') != qa_opt('theme_switch_mobile')) {
-					error_log('test');
 					$this->content['navigation']['footer']['theme_switch'] = array(
 						'label' => 'Mobile Version',
 						'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_mobile'))),
