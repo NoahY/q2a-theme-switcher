@@ -12,7 +12,8 @@ Features
 - theme selection in user profile
 - toggle on/off via admin/plugins
 - default theme selection in admin/plugins
-- optional mobile theme selection in admin/plugins
+- optional mobile theme selection in admin/plugins with mobile browser recognition
+- mobile theme toggle link in footer (mobile/default), works for guests via cookies
 
 ------------
 Installation
