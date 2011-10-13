@@ -29,7 +29,7 @@
 						'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_mobile'))),
 					);
 				}
-				else if(qa_opt('site_theme') == qa_opt('theme_switch_mobile')) {
+				else if(qa_opt('theme_switch_enable_mobile') && qa_opt('site_theme') == qa_opt('theme_switch_mobile')) {
 					$this->content['navigation']['footer']['theme_switch'] = array(
 						'label' => 'Full Site',
 						'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_default'))),
