@@ -75,6 +75,10 @@
                 return true;
             }
 
+            if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'windows')>0) {
+                return false;
+            }
+            
             return false;
         }
         
