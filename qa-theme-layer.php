@@ -8,35 +8,34 @@
 	
 		function doctype()
 		{
+			global $qa_theme_switch_is_mobile;
+			
+			if($qa_theme_switch_is_mobile && qa_opt('theme_switch_enable_mobile') && qa_opt('site_theme') != qa_opt('theme_switch_mobile')) {
+				$this->content['navigation']['footer']['theme_switch'] = array(
+					'label' => 'Mobile Version',
+					'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_mobile'))),
+				);
+			}
+			else if(qa_opt('theme_switch_enable_mobile') && qa_opt('site_theme') == qa_opt('theme_switch_mobile')) {
+				$this->content['navigation']['footer']['theme_switch'] = array(
+					'label' => 'Full Site',
+					'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_default'))),
+				);
+			}
+			
+			if($_GET['theme_switch']) {
+				if($userid = qa_get_logged_in_userid()) {
+					qa_db_query_sub(
+						'INSERT INTO ^usermeta (user_id,meta_key,meta_value) VALUES (#,$,$) ON DUPLICATE KEY UPDATE meta_value=$',
+						$userid,'custom_theme',$_GET['theme_switch'],$_GET['theme_switch']
+					);
+				}
+				else setcookie('qa_theme_switch', $_GET['theme_switch'], time()+86400*365, '/', QA_COOKIE_DOMAIN);
+				qa_redirect($this->request,array());
+			}
+
 			if (qa_opt('theme_switch_enable')) {
-
-				if($_GET['theme_switch']) {
-					if($userid = qa_get_logged_in_userid()) {
-						qa_db_query_sub(
-							'INSERT INTO ^usermeta (user_id,meta_key,meta_value) VALUES (#,$,$) ON DUPLICATE KEY UPDATE meta_value=$',
-							$userid,'custom_theme',$_GET['theme_switch'],$_GET['theme_switch']
-						);
-					}
-					else setcookie('qa_theme_switch', $_GET['theme_switch'], time()+86400*365, '/', QA_COOKIE_DOMAIN);
-					qa_redirect($this->request,array());
-				}
 				
-				global $qa_theme_switch_is_mobile;
-				
-				if($qa_theme_switch_is_mobile && qa_opt('theme_switch_enable_mobile') && qa_opt('site_theme') != qa_opt('theme_switch_mobile')) {
-					$this->content['navigation']['footer']['theme_switch'] = array(
-						'label' => 'Mobile Version',
-						'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_mobile'))),
-					);
-				}
-				else if(qa_opt('theme_switch_enable_mobile') && qa_opt('site_theme') == qa_opt('theme_switch_mobile')) {
-					$this->content['navigation']['footer']['theme_switch'] = array(
-						'label' => 'Full Site',
-						'url' => qa_path($this->request, array('theme_switch'=>qa_opt('theme_switch_default'))),
-					);
-				}				
-				
-
 				if($this->template == 'user') { 
 
 					// add theme switcher
