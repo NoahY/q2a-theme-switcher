@@ -92,6 +92,8 @@
 
             require_once QA_INCLUDE_DIR.'qa-app-users.php';
             
+            $theme_choice = null;
+            
             if($userid = qa_get_logged_in_userid()) {
                 $theme_choice = qa_db_read_one_value(
                     qa_db_query_sub(
@@ -99,9 +101,14 @@
                         $userid, 'custom_theme'
                     ),true
                 );
-                if($theme_choice == qa_opt('theme_switch_default') || $theme_choice == qa_opt('theme_switch_mobile')) { // don't allow other themes, since switcher isn't on
-                    @qa_opt('site_theme',$theme_choice);
-                }
+            }
+            else {
+                $theme_choice = @$_COOKIE['qa_theme_switch'];
+                $qa_theme_switch_is_mobile = $theme_choice == qa_opt('theme_switch_mobile');
+            }
+            
+            if($theme_choice == qa_opt('theme_switch_default') || $theme_choice == qa_opt('theme_switch_mobile')) { // don't allow other themes, since switcher isn't on
+                @qa_opt('site_theme',$theme_choice);
             }
             
             // check if mobile
