@@ -52,9 +52,7 @@
 				
 				global $qa_theme_switch_is_mobile;
 				$qa_theme_switch_is_mobile = $theme_mobile; // it's mobile, but they have a preferred theme
-				qa_error_log(array($theme_choice,$theme_choice_mobile,$theme_mobile,qa_opt('theme_switch_mobile')));
 				if($theme_choice && (!$theme_choice_mobile || !$theme_mobile)) { // have theme choice, and 1) it's not mobile, 2) it's mobile and they don't have a cookie, 3) they have a cookie but it's not mobile, 4) they have a cookie, it's mobile, but the cookie isn't mobile
-					error_log('me');
 					// do nothing
 				}
 				else if(!$theme_choice_mobile && $theme_mobile)  // no cookie, is mobile, give mobile
