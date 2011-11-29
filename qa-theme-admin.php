@@ -23,6 +23,20 @@
 			
 		function admin_form(&$qa_content)
 		{					   
+
+			$table_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^usermeta'"),true);
+			if(!$table_exists) {
+				qa_db_query_sub(
+					'CREATE TABLE IF NOT EXISTS ^usermeta (
+					meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					user_id bigint(20) unsigned NOT NULL,
+					meta_key varchar(255) DEFAULT NULL,
+					meta_value longtext,
+					PRIMARY KEY (meta_id),
+					UNIQUE (user_id,meta_key)
+					) ENGINE=MyISAM  DEFAULT CHARSET=utf8'
+				);		
+			}
 							
 		// Process form input
 			
@@ -32,21 +46,7 @@
 				if(!qa_post_text('theme_switch_enable')) {
 					qa_opt('site_theme',qa_opt('theme_switch_default'));
 				}
-				if(!qa_opt('theme_switch_enable') && qa_post_text('theme_switch_enable')) {
-					$table_exists = qa_db_read_one_value(qa_db_query_sub("SHOW TABLES LIKE '^usermeta'"),true);
-					if(!$table_exists) {
-						qa_db_query_sub(
-							'CREATE TABLE IF NOT EXISTS ^usermeta (
-							meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-							user_id bigint(20) unsigned NOT NULL,
-							meta_key varchar(255) DEFAULT NULL,
-							meta_value longtext,
-							PRIMARY KEY (meta_id),
-							UNIQUE (user_id,meta_key)
-							) ENGINE=MyISAM  DEFAULT CHARSET=utf8'
-						);		
-					}
-				}
+
 				qa_opt('theme_switch_enable',(bool)qa_post_text('theme_switch_enable'));
 				qa_opt('theme_switch_default',qa_post_text('theme_switch_default'));
 				qa_opt('theme_switch_title',qa_post_text('theme_switch_title'));
