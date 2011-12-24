@@ -32,7 +32,7 @@
 				if(!qa_post_text('theme_switch_enable')) {
 					qa_opt('site_theme',qa_opt('theme_switch_default'));
 				}
-/*
+
 				qa_db_query_sub(
 					'CREATE TABLE IF NOT EXISTS ^usermeta (
 					meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -43,7 +43,7 @@
 					UNIQUE (user_id,meta_key)
 					) ENGINE=MyISAM  DEFAULT CHARSET=utf8'
 				);		
-*/
+
 				qa_opt('theme_switch_enable',(bool)qa_post_text('theme_switch_enable'));
 				qa_opt('theme_switch_default',qa_post_text('theme_switch_default'));
 				qa_opt('theme_switch_title',qa_post_text('theme_switch_title'));
@@ -92,21 +92,23 @@
 				'tags' => 'NAME="theme_switch_text"',
 			);		   
 			
-			$fields[] = array(
-				'label' => 'Enable mobile theme',
-				'tags' => 'NAME="theme_switch_enable_mobile"',
-				'value' => qa_opt('theme_switch_enable_mobile'),
-				'type' => 'checkbox',
-			);
+			if(!function_exists('qa_register_plugin_overrides')) { // 1.4
 				
-			$fields[] = array(
-				'label' => 'Mobile theme',
-				'tags' => 'NAME="theme_switch_mobile"',
-				'type' => 'select',
-				'options' => qa_admin_theme_options(),
-				'value' => @$themes[qa_opt('theme_switch_mobile')],
-			);				
-		  
+				$fields[] = array(
+					'label' => 'Enable mobile theme',
+					'tags' => 'NAME="theme_switch_enable_mobile"',
+					'value' => qa_opt('theme_switch_enable_mobile'),
+					'type' => 'checkbox',
+				);
+					
+				$fields[] = array(
+					'label' => 'Mobile theme',
+					'tags' => 'NAME="theme_switch_mobile"',
+					'type' => 'select',
+					'options' => qa_admin_theme_options(),
+					'value' => @$themes[qa_opt('theme_switch_mobile')],
+				);				
+			}
 
 			return array(		   
 				'ok' => ($ok && !isset($error)) ? $ok : null,

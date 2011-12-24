@@ -16,19 +16,6 @@
 						header('Location: ../../');
 						exit;   
 		}			   
-
-		if(qa_gpc_to_string($_GET['qa-rewrite']) == 'admin/plugins') {
-			qa_db_query_sub(
-				'CREATE TABLE IF NOT EXISTS ^usermeta (
-				meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				user_id bigint(20) unsigned NOT NULL,
-				meta_key varchar(255) DEFAULT NULL,
-				meta_value longtext,
-				PRIMARY KEY (meta_id),
-				UNIQUE (user_id,meta_key)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8'
-			);		
-		}
 		
 		$qa_theme_switch_is_mobile = false;
 		
@@ -105,48 +92,58 @@
 			return false;
 		}
 		
-		if(qa_opt('theme_switch_enable')) {
-			$this_user_theme = qa_theme_chooser();
-			qa_opt('site_theme',$this_user_theme?$this_user_theme:qa_opt('theme_switch_default'));
-		}
-		else if(qa_opt('theme_switch_enable_mobile')) {
-			
-			// for mobile switching links
-
-			require_once QA_INCLUDE_DIR.'qa-app-users.php';
-			
-			$theme_choice = null;
-			
-			if($userid = qa_get_logged_in_userid()) {
-				$theme_choice = qa_db_read_one_value(
-					qa_db_query_sub(
-						'SELECT meta_value FROM ^usermeta WHERE user_id=# AND meta_key=$',
-						$userid, 'custom_theme'
-					),true
-				);
-			}
-			else {
-				$theme_choice = @$_COOKIE['qa_theme_switch'];
-				$qa_theme_switch_is_mobile = $theme_choice == qa_opt('theme_switch_mobile');
-			}
-			
-			if($theme_choice == qa_opt('theme_switch_default') || $theme_choice == qa_opt('theme_switch_mobile')) { // don't allow other themes, since switcher isn't on
-				qa_opt('site_theme',$theme_choice);
-			}
-			
-			// check if mobile
-			
-			$this_user_mobile = qa_theme_chooser_detect_mobile();
-			if($this_user_mobile) $qa_theme_switch_is_mobile = true;
-
-			if(!$theme_choice) {
-				qa_opt('site_theme',$this_user_mobile?qa_opt('theme_switch_mobile'):qa_opt('theme_switch_default'));
-			}
-		}
-
 		qa_register_plugin_module('module', 'qa-theme-admin.php', 'qa_theme_admin', 'Theme Admin');
+
+//		qa_register_plugin_module('process', 'qa-theme-process.php', 'qa_theme_process', 'Theme Process');
 		
 		qa_register_plugin_layer('qa-theme-layer.php', 'Theme Layer');
+		
+		if(function_exists('qa_register_plugin_overrides')) { // 1.5
+		
+			qa_register_plugin_overrides('qa-theme-overrides.php');
+			
+		}
+		else { // 1.4
+		
+			if(qa_opt('theme_switch_enable')) {
+				$this_user_theme = qa_theme_chooser();
+				qa_opt('site_theme',$this_user_theme?$this_user_theme:qa_opt('theme_switch_default'));
+			}
+			else if(qa_opt('theme_switch_enable_mobile')) {
+				
+				// for mobile switching links
+
+				require_once QA_INCLUDE_DIR.'qa-app-users.php';
+				
+				$theme_choice = null;
+				
+				if($userid = qa_get_logged_in_userid()) {
+					$theme_choice = qa_db_read_one_value(
+						qa_db_query_sub(
+							'SELECT meta_value FROM ^usermeta WHERE user_id=# AND meta_key=$',
+							$userid, 'custom_theme'
+						),true
+					);
+				}
+				else {
+					$theme_choice = @$_COOKIE['qa_theme_switch'];
+					$qa_theme_switch_is_mobile = $theme_choice == qa_opt('theme_switch_mobile');
+				}
+				
+				if($theme_choice == qa_opt('theme_switch_default') || $theme_choice == qa_opt('theme_switch_mobile')) { // don't allow other themes, since switcher isn't on
+					qa_opt('site_theme',$theme_choice);
+				}
+				
+				// check if mobile
+				
+				$this_user_mobile = qa_theme_chooser_detect_mobile();
+				if($this_user_mobile) $qa_theme_switch_is_mobile = true;
+
+				if(!$theme_choice) {
+					qa_opt('site_theme',$this_user_mobile?qa_opt('theme_switch_mobile'):qa_opt('theme_switch_default'));
+				}
+			}		
+		}
 
 						
 /*							  
