@@ -21,9 +21,18 @@
 		
 		function qa_theme_chooser() {
 			
+			$userid = qa_get_logged_in_userid();
+
+			if(function_exists('qa_register_plugin_overrides')) // 1.5
+				return qa_db_read_one_value(
+					qa_db_query_sub(
+						'SELECT meta_value FROM ^usermeta WHERE user_id=# AND meta_key=$',
+						$userid, 'custom_theme'
+					),true
+				);	
+			
 			require_once QA_INCLUDE_DIR.'qa-app-users.php';
 			
-			$userid = qa_get_logged_in_userid();
 			
 			if(!$userid) {
 				$theme = @$_COOKIE['qa_theme_switch'];
@@ -39,13 +48,6 @@
 				return $theme_choice_mobile;
 			}
 			
-			$theme_choice = qa_db_read_one_value(
-				qa_db_query_sub(
-					'SELECT meta_value FROM ^usermeta WHERE user_id=# AND meta_key=$',
-					$userid, 'custom_theme'
-				),true
-			);
-
 			if(qa_opt('theme_switch_enable_mobile')) {
 				$theme_choice_mobile = @$_COOKIE['qa_theme_switch']==qa_opt('theme_switch_mobile')?qa_opt('theme_switch_mobile'):false;
 				$theme_mobile = qa_theme_chooser_detect_mobile()?qa_opt('theme_switch_mobile'):false;
