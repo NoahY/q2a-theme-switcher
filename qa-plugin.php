@@ -3,6 +3,7 @@
 /*			  
 		Plugin Name: Theme Switcher
 		Plugin URI: https://github.com/NoahY/q2a-theme-switcher
+		Plugin Update Check URI: https://github.com/NoahY/q2a-theme-switcher/raw/master/qa-plugin.php
 		Plugin Description: Theme Switcher
 		Plugin Version: 1.0b
 		Plugin Date: 2011-09-05
